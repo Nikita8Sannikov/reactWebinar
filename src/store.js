@@ -1,3 +1,4 @@
+import { generateNextCode } from './utils';
 /**
  * Хранилище состояния приложения
  */
@@ -8,7 +9,7 @@ class Store {
       list: initState.list.map(item => ({ ...item, selectedCount: 0 })),
     };
     this.listeners = []; // Слушатели изменений состояния
-    this.usedCodes = [1, 2, 3, 4, 5, 6, 7];
+    this.usedCodes = this.state.list.map(item => item.code);
   }
 
   /**
@@ -44,13 +45,8 @@ class Store {
 
   //Task 2 Generating uniq code
   generateCode() {
-    let newCode = this.usedCodes.length + 1;
-    while (this.usedCodes.includes(newCode)) {
-      newCode++;
-    }
+    const newCode = generateNextCode(this.usedCodes);
     this.usedCodes.push(newCode);
-    console.log(this.usedCodes);
-
     return newCode;
   }
 

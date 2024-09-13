@@ -26,3 +26,25 @@ export function createElement(name, props = {}, ...children) {
 
   return element;
 }
+
+//function for plural numbers
+export function getPluralForm(count, forms) {
+  const lastDigit = count % 10;
+  const lastTwoDigits = count % 100;
+
+  if (lastTwoDigits >= 11 && lastTwoDigits <= 19) {
+    return forms[0];
+  } else if (lastDigit === 1) {
+    return forms[0];
+  } else if (lastDigit >= 2 && lastDigit <= 4) {
+    return forms[1];
+  } else {
+    return forms[0];
+  }
+}
+
+//function generating unique code
+export function generateNextCode(usedCodes) {
+  if (usedCodes.length === 0) return 1;
+  return Math.max(...usedCodes) + 1;
+}

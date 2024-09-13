@@ -1,7 +1,7 @@
 import React from 'react';
 import { createElement } from './utils.js';
 import './styles.css';
-
+import { getPluralForm } from './utils.js';
 /**
  * Приложение
  * @param store {Store} Состояние приложения
@@ -28,7 +28,7 @@ function App({ store }) {
               >
                 <div className="Item-code">{item.code}</div>
                 {/* Task 3 number of highlightings */}
-                <div className="Item-title">{`${item.title} ${item.selectedCount > 0 ? `| Выделяли ${item.selectedCount} раз(а)` : ''}`}</div>
+                <div className="Item-title">{`${item.title} ${item.selectedCount > 0 ? `| Выделяли ${item.selectedCount} ${getPluralForm(item.selectedCount, ['раз', 'раза'])}` : ''}`}</div>
                 <div className="Item-actions">
                   <button onClick={() => store.deleteItem(item.code)}>Удалить</button>
                 </div>
