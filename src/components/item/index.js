@@ -1,29 +1,15 @@
-import React, { useCallback, useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import './style.css';
 
 function Item(props) {
-  const callbacks = {
-    onAdd: useCallback(() => {
-      const existingItem = props.busket.find(busketItem => busketItem.code === props.item.code);
-      if (existingItem) {
-        props.setBusket(
-          props.busket.map(busketItem =>
-            busketItem.code === props.item.code
-              ? { ...busketItem, quantity: busketItem.quantity + 1 }
-              : busketItem,
-          ),
-        );
-      } else {
-        props.setBusket([...props.busket, { ...props.item, quantity: 1 }]);
-      }
-    }, [props.busket]),
+  const handleAddToModal = () => {
+    props.onAdd(props.item);
+  };
 
-    onDelete: useCallback(() => {
-      props.setBusket(prevBusket => {
-        return prevBusket.filter(item => item.code !== props.item.code);
-      });
-    }, [props.item.code, props.setBusket]),
+  const handleDeleteFromModal = e => {
+    e.stopPropagation();
+    props.onDelete(props.item.code);
   };
 
   return (
@@ -34,9 +20,9 @@ function Item(props) {
       {props.item.quantity && <div className="Item-quantity">{props.item.quantity} шт </div>}
       <div className="Item-actions">
         {!props.item.quantity ? (
-          <button onClick={callbacks.onAdd}>Добавить</button>
+          <button onClick={handleAddToModal}>Добавить</button>
         ) : (
-          <button onClick={callbacks.onDelete}>Удалить</button>
+          <button onClick={handleDeleteFromModal}>Удалить</button>
         )}
       </div>
     </div>
@@ -47,11 +33,8 @@ Item.propTypes = {
   item: PropTypes.shape({
     code: PropTypes.number,
     title: PropTypes.string,
-    selected: PropTypes.bool,
   }).isRequired,
   quantity: PropTypes.number,
-  onDelete: PropTypes.func,
-  onAdd: PropTypes.func,
 };
 
 export default React.memo(Item);

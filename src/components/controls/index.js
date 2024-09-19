@@ -4,7 +4,7 @@ import { plural } from '../../utils';
 import './style.css';
 
 function Controls({ title, busket = [], onModal = () => {} }) {
-  const totalItems = busket.map(item => item.quantity).reduce((acc, cur) => acc + cur, 0);
+  const totalItems = busket.length;
   const totalPrice = busket
     .map(item => item.price * item.quantity)
     .reduce((acc, cur) => acc + cur, 0);

@@ -6,11 +6,10 @@ import { generateCode } from './utils';
 class Store {
   constructor(initState = {}) {
     this.state = {
-      ...initState,
-      list: initState.list.map(item => ({ ...item })),
+      list: initState.list || [],
+      busket: initState.busket || [],
     };
     this.listeners = []; // Слушатели изменений состояния
-    this.usedCodes = this.state.list.map(item => item.code);
   }
 
   /**
@@ -60,7 +59,27 @@ class Store {
   //     list: [...this.state.list, { code: generateCode(), title: 'Новая запись' }],
   //   });
   // }
-
+  /**
+   * Добавление новой записи в корзину
+   */
+  AddItemToModal(item) {
+    const existingItem = this.state.busket.find(busketItem => busketItem.code === item.code);
+    if (existingItem) {
+      this.setState({
+        ...this.state,
+        busket: this.state.busket.map(busketItem =>
+          busketItem.code === item.code
+            ? { ...busketItem, quantity: busketItem.quantity + 1 }
+            : busketItem,
+        ),
+      });
+    } else {
+      this.setState({
+        ...this.state,
+        busket: [...this.state.busket, { ...item, quantity: 1 }],
+      });
+    }
+  }
   /**
    * Удаление записи по коду
    * @param code
@@ -72,6 +91,15 @@ class Store {
   //     list: this.state.list.filter(item => item.code !== code),
   //   });
   // }
+  /**
+   * Удаление записи по коду из корзины
+   */
+  DeleteItemFromModal(code) {
+    this.setState({
+      ...this.state,
+      busket: this.state.busket.filter(item => item.code !== code),
+    });
+  }
 
   /**
    * Выделение записи по коду

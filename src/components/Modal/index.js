@@ -3,7 +3,14 @@ import PropTypes from 'prop-types';
 import './style.css';
 import Item from '../item/';
 
-const Modal = ({ isVisible = false, title, onClose, content, setBusket, footerTitle }) => {
+const Modal = ({
+  isVisible = false,
+  title,
+  onClose,
+  content,
+  onDelete = () => {},
+  footerTitle,
+}) => {
   return !isVisible ? null : (
     <div className="modal fade">
       <div className="modal-dialog">
@@ -15,7 +22,7 @@ const Modal = ({ isVisible = false, title, onClose, content, setBusket, footerTi
           <div className="modal-content">
             {content.map(item => (
               <div key={item.code} className="List-item">
-                <Item item={item} setBusket={setBusket}></Item>
+                <Item item={item} onDelete={onDelete}></Item>
               </div>
             ))}
           </div>
@@ -40,7 +47,7 @@ Modal.propTypes = {
       quantity: PropTypes.number.isRequired,
     }),
   ).isRequired,
-  setBusket: PropTypes.func.isRequired,
+  onDelete: PropTypes.func,
   footerTitle: PropTypes.string,
 };
 

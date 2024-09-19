@@ -11,26 +11,38 @@ import Modal from './components/Modal';
  */
 function App({ store }) {
   const list = store.getState().list;
+  const busket = store.getState().busket;
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [busket, setBusket] = useState([]);
 
   const callbacks = {
     onModal: useCallback(() => {
       setIsModalOpen(true);
     }, []),
+    onAdd: useCallback(
+      item => {
+        store.AddItemToModal(item);
+      },
+      [store],
+    ),
+    onDelete: useCallback(
+      code => {
+        store.DeleteItemFromModal(code);
+      },
+      [store],
+    ),
   };
 
   return (
     <PageLayout>
       <Head title="Магазин" />
       <Controls title={'В корзине: '} busket={busket} onModal={callbacks.onModal} />
-      <List busket={busket} setBusket={setBusket} list={list} />
+      <List list={list} onAdd={callbacks.onAdd} />
       <Modal
         isVisible={isModalOpen}
         title="В корзине"
         content={busket}
         onClose={() => setIsModalOpen(false)}
-        setBusket={setBusket}
+        onDelete={callbacks.onDelete}
         footerTitle="Итого "
       />
     </PageLayout>
