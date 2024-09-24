@@ -3,11 +3,3 @@
   justify-content: flex-end;
   padding: 20px;
 }
-
-.control-title {
-  margin-right: 20px;
-}
-.control-title > span {
-  font-size: 18px;
-  font-weight: 700;
-}

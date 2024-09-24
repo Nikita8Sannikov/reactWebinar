@@ -1,29 +1,23 @@
-import React from 'react';
+import { memo, useState } from 'react';
 import PropTypes from 'prop-types';
+import { cn as bem } from '@bem-react/classname';
+import { numberFormat } from '../../utils';
 import './style.css';
 
 function Item(props) {
-  const handleAddToModal = () => {
-    props.onAdd(props.item);
-  };
+  const cn = bem('Item');
 
-  const handleDeleteFromModal = e => {
-    e.stopPropagation();
-    props.onDelete(props.item.code);
+  const callbacks = {
+    onAdd: e => props.onAdd(props.item._id),
   };
 
   return (
-    <div className="Item">
-      <div className="Item-code">{props.item.code}</div>
-      <div className="Item-title">{props.item.title}</div>
-      <div className="Item-price">{props.item.price} ₽</div>
-      {props.item.quantity && <div className="Item-quantity">{props.item.quantity} шт </div>}
-      <div className="Item-actions">
-        {!props.item.quantity ? (
-          <button onClick={handleAddToModal}>Добавить</button>
-        ) : (
-          <button onClick={handleDeleteFromModal}>Удалить</button>
-        )}
+    <div className={cn()}>
+      {/*<div className={cn('code')}>{props.item._id}</div>*/}
+      <div className={cn('title')}>{props.item.title}</div>
+      <div className={cn('actions')}>
+        <div className={cn('price')}>{numberFormat(props.item.price)} ₽</div>
+        <button onClick={callbacks.onAdd}>Добавить</button>
       </div>
     </div>
   );
@@ -31,10 +25,15 @@ function Item(props) {
 
 Item.propTypes = {
   item: PropTypes.shape({
-    code: PropTypes.number,
+    _id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     title: PropTypes.string,
+    price: PropTypes.number,
   }).isRequired,
-  quantity: PropTypes.number,
+  onAdd: PropTypes.func,
 };
 
-export default React.memo(Item);
+Item.defaultProps = {
+  onAdd: () => {},
+};
+
+export default memo(Item);
