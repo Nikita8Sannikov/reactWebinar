@@ -35,8 +35,4 @@ Item.propTypes = {
   onAdd: PropTypes.func,
 };
 
-Item.defaultProps = {
-  onAdd: () => {},
-};
-
 export default memo(Item);
