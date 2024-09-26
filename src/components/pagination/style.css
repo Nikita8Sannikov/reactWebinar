@@ -1,0 +1,30 @@
+.Pagination {
+  display: flex;
+  justify-content: flex-end;
+  padding: 10px;
+}
+.Pagination-wrapper {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: 10px;
+}
+.Pagination-item {
+  padding: 5px 10px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.Pagination-item_active {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+.Pagination-item_split {
+  cursor: default;
+}
+.Pagination-item:hover {
+  background-color: lightgray;
+  color: white;
+}

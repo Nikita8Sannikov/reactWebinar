@@ -11,21 +11,21 @@ function ProductCard({ product = {}, onAdd = () => {} }) {
     <div className={cn()}>
       <div className={cn('description')}> {product.description}</div>
       <div className={cn('prop')}>
-        <div className={cn('label')}>Страна производитель:</div>
+        <div className={cn('label')}>Страна производитель: </div>
         <div className={cn('value')}>
           {product.madeIn?.title} ({product.madeIn?.code})
         </div>
       </div>
       <div className={cn('prop')}>
-        <div className={cn('label')}>Категория</div>
+        <div className={cn('label')}>Категория: </div>
         <div className={cn('value')}>{product.category?.title}</div>
       </div>
       <div className={cn('prop')}>
-        <div className={cn('label')}>Год выпуска:</div>
+        <div className={cn('label')}>Год выпуска: </div>
         <div className={cn('value')}>{product.edition}</div>
       </div>
       <div className={cn('prop', { size: 'big' })}>
-        <div className={cn('label')}>Цена:</div>
+        <div className={cn('label')}>Цена: </div>
         <div className={cn('value')}>{numberFormat(product.price)} ₽</div>
       </div>
       <button
