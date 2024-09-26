@@ -1,0 +1,30 @@
+.ProductCard {
+  /* display: flex; */
+  /* flex-direction: column; */
+  gap: 20px;
+  padding-left: 40px;
+
+  font-size: 18px;
+  font-weight: 400;
+}
+.ProductCard-prop {
+  display: flex;
+}
+.ProductCard-prop_size_big {
+  font-size: 24px;
+  font-weight: 700;
+}
+.ProductCard-label {
+  padding: 0 5px;
+}
+.ProductCard-value {
+  font-weight: 700;
+}
+.ProductCard > button {
+  display: block;
+}
+.ProductCard-description,
+.ProductCard-prop,
+.ProductCard-label {
+  margin-bottom: 10px;
+}
