@@ -3,6 +3,8 @@ import Main from './main';
 import Basket from './basket';
 import useStore from '../store/use-store';
 import useSelector from '../store/use-selector';
+import { Route, Routes } from 'react-router-dom';
+import Product from './product';
 
 /**
  * Приложение
@@ -13,7 +15,11 @@ function App() {
 
   return (
     <>
-      <Main />
+      <Routes>
+        <Route path="/" element={<Main />} />
+        <Route path="/products/:id" element={<Product />} />
+      </Routes>
+
       {activeModal === 'basket' && <Basket />}
     </>
   );
