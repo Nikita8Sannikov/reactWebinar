@@ -7,6 +7,7 @@ import List from '../../components/list';
 import useStore from '../../store/use-store';
 import useSelector from '../../store/use-selector';
 import Pagination from '../../components/pagination';
+import Navigation from '../../components/navigation';
 
 function Main() {
   const store = useStore();
@@ -23,7 +24,9 @@ function Main() {
     amount: state.basket.amount,
     sum: state.basket.sum,
   }));
-
+  const navigation = {
+    main: [{ key: 1, title: 'Главная', link: '/' }],
+  };
   const callbacks = {
     // Добавление в корзину
     addToBasket: useCallback(_id => store.actions.basket.addToBasket(_id), [store]),
@@ -44,7 +47,11 @@ function Main() {
   return (
     <PageLayout>
       <Head title="Магазин" />
-      <BasketTool onOpen={callbacks.openModalBasket} amount={select.amount} sum={select.sum} />
+      {/* <Navigation items={navigation.main} /> */}
+      <BasketTool onOpen={callbacks.openModalBasket} amount={select.amount} sum={select.sum}>
+        <Navigation items={navigation.main} />
+      </BasketTool>
+      {/* <BasketTool onOpen={callbacks.openModalBasket} amount={select.amount} sum={select.sum} /> */}
       <List list={select.list} renderItem={renders.item} />
       <Pagination
         totalCount={select.count}

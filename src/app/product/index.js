@@ -6,6 +6,7 @@ import useStore from '../../store/use-store';
 import useSelector from '../../store/use-selector';
 import { useParams } from 'react-router-dom';
 import ProductCard from '../../components/product-card';
+import Navigation from '../../components/navigation';
 
 function Product() {
   const store = useStore();
@@ -14,7 +15,9 @@ function Product() {
   useEffect(() => {
     store.actions.product.load(params.id);
   }, [params.id]);
-
+  const navigation = {
+    main: [{ key: 1, title: 'Главная', link: '/' }],
+  };
   const select = useSelector(state => ({
     product: state.product.data,
     amount: state.basket.amount,
@@ -31,7 +34,9 @@ function Product() {
   return (
     <PageLayout>
       <Head title={select.product.title} />
-      <BasketTool onOpen={callbacks.openModalBasket} amount={select.amount} sum={select.sum} />
+      <BasketTool onOpen={callbacks.openModalBasket} amount={select.amount} sum={select.sum}>
+        <Navigation items={navigation.main} />
+      </BasketTool>
       <ProductCard product={select.product} onAdd={callbacks.addToBasket} />
     </PageLayout>
   );

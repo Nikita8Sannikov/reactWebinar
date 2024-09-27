@@ -4,11 +4,8 @@
   justify-content: flex-end;
   padding: 20px;
   font-size: 18px;
+  justify-content: space-between;
 }
-
-.BasketTool-label {
-}
-
 .BasketTool-total {
   font-weight: bold;
   margin: 0 20px;
