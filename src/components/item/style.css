@@ -18,6 +18,17 @@
   width: 100%;
   padding: 20px 10px;
 }
+.Item-title a {
+  text-decoration: none;
+  color: #000;
+  font-size: 16px;
+  font-weight: 400;
+}
+.Item-title a:hover {
+  text-decoration: underline;
+  color: #000;
+}
+
 .Item-price {
   width: 100%;
   display: flex;

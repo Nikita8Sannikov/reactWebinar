@@ -14,6 +14,16 @@
   width: 100%;
   padding: 20px 10px;
 }
+.ItemBasket-title a {
+  text-decoration: none;
+  color: #000;
+  font-size: 16px;
+  font-weight: 400;
+}
+.ItemBasket-title a:hover {
+  text-decoration: underline;
+  color: #000;
+}
 
 .ItemBasket-right {
   padding: 20px 20px 20px 10px;
