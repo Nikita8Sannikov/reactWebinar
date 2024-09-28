@@ -46,8 +46,4 @@ ItemBasket.propTypes = {
   onRemove: propTypes.func,
 };
 
-ItemBasket.defaultProps = {
-  onRemove: () => {},
-};
-
 export default memo(ItemBasket);

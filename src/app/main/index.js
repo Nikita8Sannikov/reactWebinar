@@ -8,6 +8,7 @@ import useStore from '../../store/use-store';
 import useSelector from '../../store/use-selector';
 import Pagination from '../../components/pagination';
 import Navigation from '../../components/navigation';
+import SubHeader from '../../components/sub-header';
 
 function Main() {
   const store = useStore();
@@ -47,11 +48,10 @@ function Main() {
   return (
     <PageLayout>
       <Head title="Магазин" />
-      {/* <Navigation items={navigation.main} /> */}
-      <BasketTool onOpen={callbacks.openModalBasket} amount={select.amount} sum={select.sum}>
+      <SubHeader>
         <Navigation items={navigation.main} />
-      </BasketTool>
-      {/* <BasketTool onOpen={callbacks.openModalBasket} amount={select.amount} sum={select.sum} /> */}
+        <BasketTool onOpen={callbacks.openModalBasket} amount={select.amount} sum={select.sum} />
+      </SubHeader>
       <List list={select.list} renderItem={renders.item} />
       <Pagination
         totalCount={select.count}

@@ -7,6 +7,7 @@ import useSelector from '../../store/use-selector';
 import { useParams } from 'react-router-dom';
 import ProductCard from '../../components/product-card';
 import Navigation from '../../components/navigation';
+import SubHeader from '../../components/sub-header';
 
 function Product() {
   const store = useStore();
@@ -34,9 +35,12 @@ function Product() {
   return (
     <PageLayout>
       <Head title={select.product.title} />
-      <BasketTool onOpen={callbacks.openModalBasket} amount={select.amount} sum={select.sum}>
+      <SubHeader>
         <Navigation items={navigation.main} />
-      </BasketTool>
+        <BasketTool onOpen={callbacks.openModalBasket} amount={select.amount} sum={select.sum} />
+      </SubHeader>
+      {/* <Navigation items={navigation.main} />
+      <BasketTool onOpen={callbacks.openModalBasket} amount={select.amount} sum={select.sum} /> */}
       <ProductCard product={select.product} onAdd={callbacks.addToBasket} />
     </PageLayout>
   );

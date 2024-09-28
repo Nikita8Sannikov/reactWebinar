@@ -4,11 +4,10 @@ import { cn as bem } from '@bem-react/classname';
 import { numberFormat, plural } from '../../utils';
 import './style.css';
 
-function BasketTool({ children = React.ReactNode, sum = 0, amount = 0, onOpen = () => {} }) {
+function BasketTool({ sum = 0, amount = 0, onOpen = () => {} }) {
   const cn = bem('BasketTool');
   return (
     <div className={cn()}>
-      {children}
       <div>
         <span className={cn('label')}>В корзине:</span>
         <span className={cn('total')}>
