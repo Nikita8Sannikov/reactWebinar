@@ -1,26 +1,21 @@
-import React from 'react';
 import { createRoot } from 'react-dom/client';
-import { createElement } from './utils.js';
-import App from './app.js';
-import Store from './store.js';
+import { BrowserRouter } from 'react-router-dom';
+import { StoreContext } from './store/context';
+import { I18nProvider } from './i18n/context';
+import App from './app';
+import Store from './store';
 
-const store = new Store({
-  list: [
-    { code: 1, title: 'Название элемента' },
-    { code: 2, title: 'Некий объект' },
-    { code: 3, title: 'Заголовок' },
-    { code: 4, title: 'Очень длинное название элемента из семи слов' },
-    { code: 5, title: 'Запись' },
-    { code: 6, title: 'Шестая запись' },
-    { code: 7, title: 'Седьмая запись' },
-  ],
-});
+const store = new Store();
 
 const root = createRoot(document.getElementById('root'));
 
-store.subscribe(() => {
-  root.render(<App store={store} />);
-});
-
 // Первый рендер приложения
-root.render(<App store={store} />);
+root.render(
+  <StoreContext.Provider value={store}>
+    <I18nProvider>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </I18nProvider>
+  </StoreContext.Provider>,
+);
