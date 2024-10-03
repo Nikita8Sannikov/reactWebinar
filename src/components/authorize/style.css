@@ -1,0 +1,23 @@
+.Authorize {
+  padding: 36px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.Authorize-title {
+  font-family: Arial;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 27.6px;
+}
+
+.Authorize-input {
+  display: flex;
+  flex-direction: column;
+  width: 203px;
+}
+
+.Authorize-button {
+  width: 53px;
+}

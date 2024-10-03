@@ -1,0 +1,32 @@
+.Header {
+  height: 21px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 10px 20px;
+}
+
+.Header-button {
+  width: 47px;
+  height: 21px;
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #000000;
+  font-family: Arial;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 14.95px;
+  color: #000000;
+  text-decoration: none;
+}
+
+.Header-username {
+  font-family: Arial;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 14.95px;
+  color: #0087e9;
+  margin-right: 20px;
+}
