@@ -19,7 +19,6 @@ class CatalogState extends StoreModule {
         category: '',
       },
       count: 0,
-      categories: [],
       waiting: false,
     };
   }
@@ -54,17 +53,6 @@ class CatalogState extends StoreModule {
     await this.setParams(params);
   }
 
-  async fetchCategories() {
-    const response = await fetch(`/api/v1/categories?fields=_id,title,parent(_id)&limit=*`);
-    const json = await response.json();
-    this.setState(
-      {
-        ...this.getState(),
-        categories: json.result.items,
-      },
-      'Категории загружены',
-    );
-  }
   /**
    * Установка параметров и загрузка списка товаров
    * @param [newParams] {Object} Новые параметры

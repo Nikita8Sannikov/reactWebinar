@@ -16,7 +16,7 @@ function CatalogFilter() {
     sort: state.catalog.params.sort,
     query: state.catalog.params.query,
     category: state.catalog.params.category,
-    categories: state.catalog.categories,
+    categories: state.categories.list,
   }));
 
   const callbacks = {
@@ -32,10 +32,6 @@ function CatalogFilter() {
     ),
   };
 
-  useEffect(() => {
-    store.actions.catalog.fetchCategories();
-  }, [store]);
-
   const options = {
     sort: useMemo(
       () => [
@@ -46,16 +42,18 @@ function CatalogFilter() {
       ],
       [],
     ),
-    category: useMemo(() => {
-      return formatCategories(select.categories);
-    }, [select.categories]),
+    categories: useMemo(() => formatCategories(select.categories), [select.categories]),
   };
 
   const { t } = useTranslate();
 
   return (
     <SideLayout padding="medium">
-      <Select options={options.category} value={select.category} onChange={callbacks.onCategory} />
+      <Select
+        options={options.categories}
+        value={select.category}
+        onChange={callbacks.onCategory}
+      />
       <Select options={options.sort} value={select.sort} onChange={callbacks.onSort} />
       <Input
         value={select.query}

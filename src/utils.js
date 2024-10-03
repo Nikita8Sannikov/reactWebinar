@@ -36,7 +36,7 @@ export function numberFormat(value, locale = 'ru-RU', options = {}) {
 export const formatCategories = items => {
   const formattedCategories = [{ value: '', title: 'Все' }];
 
-  const addCategories = (items, parentId = null, level = 0) => {
+  const addCategories = (items = [], parentId = null, level = 0) => {
     items
       .filter(item => (item.parent ? item.parent._id : null) === parentId)
       .forEach(item => {
