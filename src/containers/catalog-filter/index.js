@@ -11,6 +11,7 @@ import SideLayout from '../../components/side-layout';
  */
 function CatalogFilter() {
   const store = useStore();
+  const { t } = useTranslate();
 
   const select = useSelector(state => ({
     sort: state.catalog.params.sort,
@@ -35,17 +36,15 @@ function CatalogFilter() {
   const options = {
     sort: useMemo(
       () => [
-        { value: 'order', title: 'По порядку' },
-        { value: 'title.ru', title: 'По именованию' },
-        { value: '-price', title: 'Сначала дорогие' },
-        { value: 'edition', title: 'Древние' },
+        { value: 'order', title: t('sort.order') },
+        { value: 'title.ru', title: t('sort.name') },
+        { value: '-price', title: t('sort.price') },
+        { value: 'edition', title: t('sort.old') },
       ],
-      [],
+      [t],
     ),
-    categories: useMemo(() => formatCategories(select.categories), [select.categories]),
+    categories: useMemo(() => formatCategories(select.categories, t), [select.categories, t]),
   };
-
-  const { t } = useTranslate();
 
   return (
     <SideLayout padding="medium">
@@ -58,7 +57,7 @@ function CatalogFilter() {
       <Input
         value={select.query}
         onChange={callbacks.onSearch}
-        placeholder={'Поиск'}
+        placeholder={t('search')}
         delay={1000}
       />
       <button onClick={callbacks.onReset}>{t('filter.reset')}</button>

@@ -22,5 +22,21 @@
   "password.label": "Password",
   "user.name": "Name",
   "user.phone": "Phone",
-  "profile.title": "Profile"
+  "profile.title": "Profile",
+  "search": "Search",
+  "sort.order": "By order",
+  "sort.name": "By name",
+  "sort.price": "Expensive first",
+  "sort.old": "Ancient",
+  "all": "All",
+  "Электроника": "Electronics",
+  "Телефоны": "Telephones",
+  "Ноутбуки": "Laptops",
+  "Телевизоры": "Televisions",
+  "Книги": "Books",
+  "Учебники": "Textbook",
+  "Художественная": "Fiction",
+  "Комиксы": "Comics",
+  "Смартфоны": "Smartphones",
+  "Аксессуары": "Accesories"
 }

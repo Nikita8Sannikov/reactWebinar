@@ -33,15 +33,17 @@ export function codeGenerator(start = 0) {
 export function numberFormat(value, locale = 'ru-RU', options = {}) {
   return new Intl.NumberFormat(locale, options).format(value);
 }
-export const formatCategories = items => {
-  const formattedCategories = [{ value: '', title: 'Все' }];
+export const formatCategories = (items, t = { t }) => {
+  const formattedCategories = [{ value: '', title: t('all') }];
 
   const addCategories = (items = [], parentId = null, level = 0) => {
     items
       .filter(item => (item.parent ? item.parent._id : null) === parentId)
       .forEach(item => {
         const prefix = '- '.repeat(level);
-        formattedCategories.push({ value: item._id, title: `${prefix} ${item.title}` });
+        const translatedTitle = t(item.title) || item.title;
+
+        formattedCategories.push({ value: item._id, title: `${prefix} ${translatedTitle}` });
         addCategories(items, item._id, level + 1);
       });
   };
