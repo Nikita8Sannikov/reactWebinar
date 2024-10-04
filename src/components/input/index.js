@@ -16,8 +16,13 @@ function Input(props) {
 
   // Обработчик изменений в поле
   const onChange = event => {
-    setValue(event.target.value);
-    onChangeDebounce(event.target.value);
+    const newValue = event.target.value;
+    setValue(newValue);
+    if (props.type !== 'login' && props.type !== 'password') {
+      onChangeDebounce(newValue);
+    } else {
+      props.onChange(newValue, props.type);
+    }
   };
 
   // Обновление стейта, если передан новый value

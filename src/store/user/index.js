@@ -49,10 +49,8 @@ class UserState extends StoreModule {
     }
   }
 
-  async signIn(data) {
+  async signIn(login, password) {
     this.setState({ waiting: true });
-    console.log('login', data);
-
     try {
       const response = await fetch('/api/v1/users/sign', {
         method: 'POST',
@@ -60,8 +58,8 @@ class UserState extends StoreModule {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          login: data.login,
-          password: data.password,
+          login,
+          password,
           remember: true,
         }),
       });

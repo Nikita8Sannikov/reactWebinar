@@ -11,47 +11,40 @@ function Authorize() {
   const { t } = useTranslate();
   const navigate = useNavigate();
   const store = useStore();
-  const [data, setData] = useState({
-    login: '',
-    password: '',
-  });
+  const [login, setLogin] = useState('');
+  const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
   const callbacks = {
-    onChange: useCallback((value, name) => {
-      setData(prev => ({ ...prev, [name]: value }));
-    }, []),
+    onChangeLogin: useCallback(value => setLogin(value), []),
+    onChangePassword: useCallback(value => setPassword(value), []),
     onSubmit: useCallback(
       async event => {
         event.preventDefault();
         try {
-          console.log(data);
-          await store.actions.user.signIn(data);
+          await store.actions.user.signIn(login, password);
           navigate('/');
         } catch (e) {
           setError(e.message);
         }
       },
-      [data],
+      [login, password],
     ),
   };
-  useEffect(() => {
-    console.log('Данные обновлены:', data);
-  }, [data]);
 
   return (
     <form className={cn()} onSubmit={callbacks.onSubmit}>
       <h2 className={cn('title')}>{t('login.title')}</h2>
 
       <div className={cn('input')}>
-        <Input type="login" name="login" value={data.login} onChange={callbacks.onChange} />
+        <Input type="login" name="login" value={login} onChange={callbacks.onChangeLogin} />
       </div>
       <div className={cn('input')}>
         <Input
           type="password"
           name="password"
-          value={data.password}
-          onChange={callbacks.onChange}
+          value={password}
+          onChange={callbacks.onChangePassword}
         />
       </div>
       {error && <p className={cn('error')}>{error}</p>}
