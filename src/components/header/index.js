@@ -1,15 +1,17 @@
 import { memo, useEffect, useState } from 'react';
 import { cn as bem } from '@bem-react/classname';
 import { Link } from 'react-router-dom';
+import useTranslate from '../../hooks/use-translate';
 import './style.css';
 
 function Header() {
   const cn = bem('Header');
   const [username, setUsername] = useState('');
-  const isAuthenticated = !!localStorage.getItem('token');
+  const { t } = useTranslate();
+  const isAuthenticated = !!localStorage.getItem('authToken');
 
   const fetchUserProfile = async () => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('authToken');
     if (token) {
       try {
         const response = await fetch('/api/v1/users/self?fields=*', {
@@ -37,7 +39,7 @@ function Header() {
       method: 'DELETE',
       headers: { 'X-Token': token },
     });
-    localStorage.removeItem('token');
+    localStorage.removeItem('authToken');
     localStorage.removeItem('username');
     window.location.reload();
   };
@@ -49,11 +51,11 @@ function Header() {
           <Link to="/profile" className={cn('username')}>
             {username}
           </Link>
-          <button onClick={handleLogout}>Выход</button>
+          <button onClick={handleLogout}>{t('logout.button')}</button>
         </div>
       ) : (
         <Link to="/login" className={cn('button')}>
-          Вход
+          {t('login.label')}
         </Link>
       )}
     </div>

@@ -21,3 +21,6 @@
 .Authorize-button {
   width: 53px;
 }
+.Authorize-error {
+  color: red;
+}
