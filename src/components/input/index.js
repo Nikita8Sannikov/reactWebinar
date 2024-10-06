@@ -30,13 +30,16 @@ function Input(props) {
 
   const cn = bem('Input');
   return (
-    <input
-      className={cn({ theme: props.theme })}
-      value={value}
-      type={props.type}
-      placeholder={props.placeholder}
-      onChange={onChange}
-    />
+    <div className={cn()}>
+      {props.label && <label className={cn('label')}>{props.label}</label>}
+      <input
+        className={cn({ theme: props.theme })}
+        value={value}
+        type={props.type}
+        placeholder={props.placeholder}
+        onChange={onChange}
+      />
+    </div>
   );
 }
 

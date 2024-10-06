@@ -3,35 +3,27 @@ import { cn as bem } from '@bem-react/classname';
 import { Link } from 'react-router-dom';
 import useTranslate from '../../hooks/use-translate';
 import './style.css';
+import useSession from '../../hooks/use-session';
 
 function Header() {
   const cn = bem('Header');
   const [username, setUsername] = useState('');
+  const { restoreSession } = useSession();
   const { t } = useTranslate();
   const isAuthenticated = !!localStorage.getItem('authToken');
 
-  const fetchUserProfile = async () => {
-    const token = localStorage.getItem('authToken');
-    if (token) {
-      try {
-        const response = await fetch('/api/v1/users/self?fields=*', {
-          headers: { 'X-Token': token },
-        });
-        const data = await response.json();
-        if (data.result && data.result.profile) {
-          setUsername(data.result.profile.name);
-        }
-      } catch (error) {
-        console.error('Ошибка при получении профиля:', error);
-      }
-    }
-  };
-
   useEffect(() => {
-    if (isAuthenticated) {
-      fetchUserProfile();
-    }
-  }, [isAuthenticated]);
+    const fetchUserProfile = async () => {
+      if (isAuthenticated) {
+        const profile = await restoreSession();
+        if (profile) {
+          setUsername(profile.name);
+        }
+      }
+    };
+
+    fetchUserProfile();
+  }, [isAuthenticated, restoreSession]);
 
   const handleLogout = async () => {
     const token = localStorage.getItem('token');

@@ -1,7 +1,7 @@
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import useSelector from '../hooks/use-selector';
-import useStore from '../hooks/use-store';
+import useSession from '../hooks/use-session';
 import Main from './main';
 import Basket from './basket';
 import Article from './article';
@@ -13,24 +13,16 @@ import User from './user';
  */
 function App() {
   const activeModal = useSelector(state => state.modals.name);
-  const store = useStore();
-  const token = localStorage.getItem('authToken');
 
-  useEffect(() => {
-    const fetchProfile = async () => {
-      if (token) {
-        await store.actions.user.loadProfile();
-      }
-    };
-    fetchProfile();
-  }, [store.actions.user]);
+  const { profile } = useSession();
+
   return (
     <>
       <Routes>
         <Route path={''} element={<Main />} />
         <Route path={'/articles/:id'} element={<Article />} />
         <Route path={'/login'} element={<Login />} />
-        <Route path={'/profile'} element={<User />} />
+        <Route path={'/profile'} element={<User profile={profile} />} />
       </Routes>
 
       {activeModal === 'basket' && <Basket />}

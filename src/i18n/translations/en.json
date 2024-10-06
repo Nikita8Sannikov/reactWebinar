@@ -19,6 +19,7 @@
   "login.button": "Login",
   "logout.button": "Logout",
   "login.label": "Login",
+  "login": "Login",
   "password.label": "Password",
   "user.name": "Name",
   "user.phone": "Phone",

@@ -11,44 +11,6 @@ class UserState extends StoreModule {
     };
   }
 
-  async loadProfile() {
-    const token = this.getState().token || localStorage.getItem('authToken');
-    if (!token) {
-      throw new Error('No token found');
-    }
-
-    this.setState({ waiting: true });
-
-    try {
-      const response = await fetch('/api/v1/users/self?fields=*', {
-        headers: {
-          'X-Token': token,
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to load profile');
-      }
-
-      const json = await response.json();
-
-      this.setState({
-        name: json.result.profile.name,
-        email: json.result.email,
-        phone: json.result.profile.phone,
-        waiting: false,
-      });
-    } catch (e) {
-      this.setState({
-        name: '',
-        phone: '',
-        email: '',
-        waiting: false,
-      });
-      console.error(e.message);
-    }
-  }
-
   async signIn(login, password) {
     this.setState({ waiting: true });
     try {
@@ -65,10 +27,13 @@ class UserState extends StoreModule {
       });
 
       if (!response.ok) {
-        throw new Error('Authorization failed');
+        const errorData = await response.json();
+        const errorMessage = errorData.error.data.issues.map(item => item.message);
+        throw new Error(errorMessage);
       }
 
       const json = await response.json();
+
       const { token, user } = json.result;
 
       this.setState({

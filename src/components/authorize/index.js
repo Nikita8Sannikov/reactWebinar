@@ -1,46 +1,28 @@
-import React, { memo, useCallback, useEffect, useState } from 'react';
-import Input from '../input';
+import React, { memo } from 'react';
 import { cn as bem } from '@bem-react/classname';
-import { useNavigate } from 'react-router-dom';
-import useStore from '../../hooks/use-store';
-import useTranslate from '../../hooks/use-translate';
+import Input from '../input';
+import PropTypes from 'prop-types';
 import './style.css';
 
-function Authorize() {
+function Authorize({ callbacks, error, t, login, password }) {
   const cn = bem('Authorize');
-  const { t } = useTranslate();
-  const navigate = useNavigate();
-  const store = useStore();
-  const [login, setLogin] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-
-  const callbacks = {
-    onChangeLogin: useCallback(value => setLogin(value), []),
-    onChangePassword: useCallback(value => setPassword(value), []),
-    onSubmit: useCallback(
-      async event => {
-        event.preventDefault();
-        try {
-          await store.actions.user.signIn(login, password);
-          navigate('/');
-        } catch (e) {
-          setError(e.message);
-        }
-      },
-      [login, password],
-    ),
-  };
 
   return (
     <form className={cn()} onSubmit={callbacks.onSubmit}>
       <h2 className={cn('title')}>{t('login.title')}</h2>
 
       <div className={cn('input')}>
-        <Input type="login" name="login" value={login} onChange={callbacks.onChangeLogin} />
+        <Input
+          label={t('login')}
+          type="login"
+          name="login"
+          value={login}
+          onChange={callbacks.onChangeLogin}
+        />
       </div>
       <div className={cn('input')}>
         <Input
+          label={t('password.label')}
           type="password"
           name="password"
           value={password}
@@ -55,5 +37,12 @@ function Authorize() {
     </form>
   );
 }
+
+Authorize.propTypes = {
+  login: PropTypes.string.isRequired,
+  password: PropTypes.string.isRequired,
+  error: PropTypes.string,
+  t: PropTypes.func.isRequired,
+};
 
 export default memo(Authorize);
