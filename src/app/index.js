@@ -13,8 +13,11 @@ import User from './user';
  */
 function App() {
   const activeModal = useSelector(state => state.modals.name);
+  const { restoreSession } = useSession();
 
-  const { profile } = useSession();
+  useEffect(() => {
+    restoreSession();
+  }, [restoreSession]);
 
   return (
     <>
@@ -22,7 +25,7 @@ function App() {
         <Route path={''} element={<Main />} />
         <Route path={'/articles/:id'} element={<Article />} />
         <Route path={'/login'} element={<Login />} />
-        <Route path={'/profile'} element={<User profile={profile} />} />
+        <Route path={'/profile'} element={<User />} />
       </Routes>
 
       {activeModal === 'basket' && <Basket />}

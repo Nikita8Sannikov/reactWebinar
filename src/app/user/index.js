@@ -8,16 +8,18 @@ import Header from '../../components/header';
 import UserCard from '../../components/user-card';
 import { useNavigate } from 'react-router-dom';
 import useSelector from '../../hooks/use-selector';
+import useStore from '../../hooks/use-store';
 
 function User() {
+  const store = useStore();
   const { t } = useTranslate();
   const token = localStorage.getItem('authToken');
   const navigate = useNavigate();
   const select = useSelector(state => ({
     data: {
-      name: state.user.name || '',
-      email: state.user.email || '',
-      phone: state.user.phone || '',
+      profile: state.profile.profile,
+      error: state.profile.error,
+      loading: state.profile.loading,
     },
     waiting: state.user.waiting,
   }));
@@ -25,6 +27,8 @@ function User() {
   useEffect(() => {
     if (!token) {
       navigate('/login');
+    } else {
+      store.actions.profile.loadProfile(token);
     }
   }, [token, navigate]);
 

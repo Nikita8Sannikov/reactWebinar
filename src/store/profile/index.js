@@ -10,13 +10,11 @@ class ProfileState extends StoreModule {
     };
   }
 
-  async loadProfile() {
-    const token = localStorage.getItem('authToken');
+  async loadProfile(token) {
+    this.setState({ loading: true, error: null });
     if (!token) {
-      throw new Error('No token found');
+      return this.setState({ loading: false, error: 'Нет токена' });
     }
-
-    this.setState({ loading: true });
 
     try {
       const response = await fetch('/api/v1/users/self?fields=*', {
@@ -30,14 +28,12 @@ class ProfileState extends StoreModule {
       }
 
       const json = await response.json();
-      this.setState({
-        name: json.result.profile.name,
-        email: json.result.email,
-        phone: json.result.profile.phone,
-        loading: false,
-      });
+
+      if (json.result) {
+        this.setState({ profile: json.result, loading: false });
+      }
     } catch (error) {
-      this.setState({ loading: false });
+      this.setState({ loading: false, error: e.message });
       console.error(error.message);
     }
   }
