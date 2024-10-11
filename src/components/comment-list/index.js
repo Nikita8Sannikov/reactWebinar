@@ -4,12 +4,14 @@ import { cn as bem } from '@bem-react/classname';
 import Comment from '../comment';
 import CommentOptions from '../comment-options';
 import CommentForm from '../comment-form';
+import useTranslate from '../../hooks/use-translate';
 import './style.css';
 
 function CommentsList({ list = [], commentsCount, exists, onComment, onResponse }) {
   const cn = bem('CommentList');
   const [replyingTo, setReplyingTo] = useState(null);
   const [replyingToAuthor, setReplyingToAuthor] = useState('');
+  const { t } = useTranslate();
 
   const handleReplyClick = useCallback((commentId, authorName) => {
     setReplyingTo(commentId);
@@ -33,9 +35,9 @@ function CommentsList({ list = [], commentsCount, exists, onComment, onResponse 
   const renderReplyForm = commentId =>
     exists ? (
       <CommentForm
-        title="Новый ответ"
+        title={t('newResponse')}
         submit={text => handleReplySubmit(text, commentId)}
-        placeholder={`Мой ответ для  ${replyingToAuthor}`}
+        placeholder={`${t('myanswer')}  ${replyingToAuthor}`}
         onCancel={handleCancelReply}
       />
     ) : (
@@ -48,9 +50,6 @@ function CommentsList({ list = [], commentsCount, exists, onComment, onResponse 
         <div key={comment._id} style={{ marginLeft: level > 0 ? '30px' : '0' }}>
           <Comment
             comment={comment}
-            /* {comment.children && comment.children.length > 0 && (
-          <div>{renderComments(comment.children, level + 1)}</div>
-        )} */
             onClick={() =>
               handleReplyClick(comment._id, comment.author?.profile?.name || t('commentList.name'))
             }
@@ -66,11 +65,13 @@ function CommentsList({ list = [], commentsCount, exists, onComment, onResponse 
 
   return (
     <div className={cn()}>
-      <h3 className={cn('header')}>Комментарии ({commentsCount})</h3>
+      <h3 className={cn('header')}>
+        {t('comment.title')} {exists ? `(${commentsCount})` : '(0)'}
+      </h3>
       {exists && renderComments(list)}
       {!exists && !replyingTo && <CommentOptions exists={exists} />}
       {exists && !replyingTo && (
-        <CommentForm title="Новый комментарий" submit={onComment} placeholder="Текст " />
+        <CommentForm title={t('newСomment')} submit={onComment} placeholder={t('text')} />
       )}
     </div>
   );
@@ -83,6 +84,15 @@ CommentsList.propTypes = {
     }),
   ).isRequired,
   commentsCount: PropTypes.number,
+  onComment: PropTypes.func.isRequired,
+  onResponse: PropTypes.func.isRequired,
+  exists: PropTypes.bool.isRequired,
+  handleReplyClick: PropTypes.func,
+  handleCancelReply: PropTypes.func,
+  handleReplySubmit: PropTypes.func,
+  renderReplyForm: PropTypes.func,
+  renderComments: PropTypes.func,
+  t: PropTypes.func,
 };
 
 export default memo(CommentsList);

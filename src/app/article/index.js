@@ -79,7 +79,6 @@ function Article() {
       },
       [dispatch, commentsActions],
     ),
-    // Создание нового ответа на комментарий
     addResponse: useCallback(
       (comment, commentId) => {
         dispatch(commentsActions.add(select.username, comment, commentId, 'comment'));
