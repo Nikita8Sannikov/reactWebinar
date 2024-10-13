@@ -52,27 +52,12 @@ export default {
         };
 
         dispatch({
-          type: 'comments/create-comment-success',
+          type: 'comments/add-success',
           payload: { data },
         });
       } catch (e) {
         dispatch({ type: 'comments/create-comment-error' });
       }
     };
-    // add: comment => {
-    //   return async (dispatch, getState, services) => {
-    //     dispatch({ type: 'comments/add-start' });
-    //     try {
-    //       const res = await services.api.request({
-    //         method: 'POST',
-    //         url: '/api/v1/comments',
-    //         body: JSON.stringify(comment),
-    //       });
-
-    //       dispatch({ type: 'comments/add-success', payload: res.data });
-    //     } catch (e) {
-    //       dispatch({ type: 'comments/add-error' });
-    //     }
-    //   };
   },
 };

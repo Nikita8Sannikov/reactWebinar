@@ -4,7 +4,7 @@ import { cn as bem } from '@bem-react/classname';
 import { formatDate } from '../../utils/formate-date';
 import useTranslate from '../../hooks/use-translate';
 import './style.css';
-function Comment({ comment, onClick }) {
+function Comment({ comment, onClick, currentUser, exists }) {
   const { author, text, dateCreate, isDeleted } = comment;
   const { t } = useTranslate();
 
@@ -13,7 +13,13 @@ function Comment({ comment, onClick }) {
   return (
     <div className={cn()}>
       <div className={cn('user-date')}>
-        <div className={cn('user')}>{author.profile.name}</div>
+        <div
+          className={
+            exists && author.profile.name === currentUser ? cn('current-user') : cn('user')
+          }
+        >
+          {author.profile.name}
+        </div>
         <div className={cn('date')}>{formatDate(dateCreate)}</div>
       </div>
       <p className={cn('text')}>{isDeleted ? 'No content' : text}</p>
@@ -40,4 +46,6 @@ Comment.propTypes = {
   }),
   onClick: PropTypes.func,
   t: PropTypes.func,
+  exists: PropTypes.bool,
+  currentUser: PropTypes.string,
 };

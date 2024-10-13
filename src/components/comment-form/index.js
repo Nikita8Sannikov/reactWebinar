@@ -15,8 +15,8 @@ function CommentForm({ title, submit, onCancel, placeholder }) {
     }, []),
     onSubmit: useCallback(
       e => {
+        e.preventDefault();
         if (text.trim()) {
-          e.preventDefault();
           submit(text);
           setText('');
         }

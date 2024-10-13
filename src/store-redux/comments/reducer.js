@@ -28,7 +28,10 @@ function reducer(state = initialState, action) {
       return { ...state, waiting: true };
 
     case 'comments/add-success':
-      return { ...state.data, data: action.payload.data, waiting: false };
+      return {
+        ...state,
+        comments: [...state.comments, action.payload.data],
+      };
 
     case 'comments/add-error':
       return { ...state, waiting: false };

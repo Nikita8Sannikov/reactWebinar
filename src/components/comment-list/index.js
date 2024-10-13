@@ -1,4 +1,4 @@
-import { memo, useState, useCallback } from 'react';
+import { memo, useState, useCallback, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { cn as bem } from '@bem-react/classname';
 import Comment from '../comment';
@@ -7,11 +7,20 @@ import CommentForm from '../comment-form';
 import useTranslate from '../../hooks/use-translate';
 import './style.css';
 
-function CommentsList({ list = [], commentsCount, exists, onComment, onResponse }) {
+function CommentsList({ list = [], commentsCount, exists, onComment, onResponse, currentUser }) {
   const cn = bem('CommentList');
   const [replyingTo, setReplyingTo] = useState(null);
   const [replyingToAuthor, setReplyingToAuthor] = useState('');
   const { t } = useTranslate();
+  const replyRef = useRef(null);
+
+  useEffect(() => {
+    if (replyingTo && replyRef.current) {
+      setTimeout(() => {
+        replyRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
+    }
+  }, [replyingTo]);
 
   const handleReplyClick = useCallback((commentId, authorName) => {
     setReplyingTo(commentId);
@@ -32,35 +41,49 @@ function CommentsList({ list = [], commentsCount, exists, onComment, onResponse 
     setReplyingToAuthor('');
   }, []);
 
-  const renderReplyForm = commentId =>
-    exists ? (
-      <CommentForm
-        title={t('newResponse')}
-        submit={text => handleReplySubmit(text, commentId)}
-        placeholder={`${t('myanswer')}  ${replyingToAuthor}`}
-        onCancel={handleCancelReply}
-      />
-    ) : (
-      <CommentOptions exists={true} onCancel={handleCancelReply} />
-    );
+  const renderReplyForm = useCallback(
+    commentId =>
+      exists ? (
+        <div ref={replyRef}>
+          <CommentForm
+            title={t('newResponse')}
+            submit={text => handleReplySubmit(text, commentId)}
+            onCancel={handleCancelReply}
+          />
+        </div>
+      ) : (
+        <div ref={replyRef}>
+          <CommentOptions exists={true} onCancel={handleCancelReply} />
+        </div>
+      ),
+    [handleCancelReply, handleReplySubmit, t, exists],
+  );
 
   const renderComments = useCallback(
-    (comments, level = 0) =>
-      comments.map(comment => (
-        <div key={comment._id} style={{ marginLeft: level > 0 ? '30px' : '0' }}>
-          <Comment
-            comment={comment}
-            onClick={() =>
-              handleReplyClick(comment._id, comment.author?.profile?.name || t('commentList.name'))
-            }
-          />
-          {replyingTo === comment._id && renderReplyForm(comment._id)}
-          {comment.children &&
-            comment.children.length > 0 &&
-            renderComments(comment.children, level + 1)}
-        </div>
-      )),
-    [handleReplyClick, replyingTo, renderReplyForm],
+    (comments, level = 0) => {
+      return comments
+        .filter(comment => comment.parentId === null || comment.parentId === undefined) // Рендерим только корневые комментарии
+        .map(comment => (
+          <div key={comment._id} style={{ marginLeft: level > 0 && level < 12 ? '30px' : '0' }}>
+            <Comment
+              currentUser={currentUser}
+              exists={exists}
+              comment={comment}
+              onClick={() =>
+                handleReplyClick(
+                  comment._id,
+                  comment.author?.profile?.name || t('commentList.name'),
+                )
+              }
+            />
+            {comment.children &&
+              comment.children.length > 0 &&
+              renderComments(comment.children, level + 1)}
+            {replyingTo === comment._id && renderReplyForm(comment._id)}
+          </div>
+        ));
+    },
+    [currentUser, exists, handleReplyClick, replyingTo, renderReplyForm, t],
   );
 
   return (
@@ -68,8 +91,8 @@ function CommentsList({ list = [], commentsCount, exists, onComment, onResponse 
       <h3 className={cn('header')}>
         {t('comment.title')} {exists ? `(${commentsCount})` : '(0)'}
       </h3>
-      {exists && renderComments(list)}
-      {!exists && !replyingTo && <CommentOptions exists={exists} />}
+      {renderComments(list)}
+      {/* {!exists && <CommentOptions exists={exists} />} */}
       {exists && !replyingTo && (
         <CommentForm title={t('newСomment')} submit={onComment} placeholder={t('text')} />
       )}

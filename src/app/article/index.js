@@ -73,16 +73,28 @@ function Article() {
     // Добавление в корзину
     addToBasket: useCallback(_id => store.actions.basket.addToBasket(_id), [store]),
     addComment: useCallback(
-      comment => {
-        dispatch(commentsActions.add(select.username, comment, params.id, 'article'));
-        dispatch(commentsActions.load(params.id));
+      async comment => {
+        const newComment = await dispatch(
+          commentsActions.add(select.username, comment, params.id, 'article'),
+        );
+        dispatch({
+          type: 'comments/addNewComment',
+          payload: newComment,
+        });
       },
       [dispatch, commentsActions],
     ),
     addResponse: useCallback(
-      (comment, commentId) => {
-        dispatch(commentsActions.add(select.username, comment, commentId, 'comment'));
-        dispatch(commentsActions.load(params.id));
+      async (comment, commentId) => {
+        const newResponse = await dispatch(
+          commentsActions.add(select.username, comment, commentId, 'comment'),
+        );
+
+        // Обновляем локальный список комментариев, добавляя новый ответ
+        dispatch({
+          type: 'comments/addNewResponse',
+          payload: newResponse,
+        });
       },
       [dispatch, commentsActions],
     ),
@@ -101,6 +113,7 @@ function Article() {
           list={options.comments}
           commentsCount={select.commentsCount}
           exists={oldSelect.exists}
+          currentUser={oldSelect.username}
           onResponse={callbacks.addResponse}
           onComment={callbacks.addComment}
         />
